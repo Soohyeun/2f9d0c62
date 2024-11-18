@@ -5,6 +5,9 @@ import { useToast } from "@/hooks/use-toast";
 const ArchiveAllBtn = ({ setActivities, archive }) => {
   const { toast } = useToast();
 
+  /**
+   * Archive all activities and updates the activities list
+   */
   const handleArchiveAll = async () => {
     try {
       await archiveAllActivities();
@@ -23,6 +26,9 @@ const ArchiveAllBtn = ({ setActivities, archive }) => {
     }
   };
 
+  /**
+   * Unrchive all activities and updates the activities list
+   */
   const handleUnarchiveAll = async () => {
     try {
       await resetActivities();

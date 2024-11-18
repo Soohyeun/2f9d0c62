@@ -1,6 +1,6 @@
 /**
- * Fetch all activities.
- * @returns all activities as a list
+ * Fetch all activities from the backend API.
+ * @returns {Promise<Object|Array>} - all activities as an array
  */
 export const fetchAllActivities = async () => {
   try {
@@ -24,9 +24,9 @@ export const fetchAllActivities = async () => {
 };
 
 /**
- * Fetch a specific activity by an id.
- * @param {number} callId - id of a activity
- * @returns activity as an object
+ * Fetch a specific activity from the backend API by an id.
+ * @param {number} callId - id of an activity
+ * @returns {Promise<Object>} - activity as an object
  */
 export const fetchActivity = async (callId) => {
   try {

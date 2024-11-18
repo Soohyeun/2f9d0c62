@@ -37,6 +37,9 @@ export default function Datail({ params }) {
     getActivity();
   }, [callID]);
 
+  /**
+   * Archive an activity
+   */
   const handleArchive = async () => {
     const isArchived = activity.is_archived;
     try {
