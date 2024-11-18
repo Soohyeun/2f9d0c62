@@ -8,6 +8,7 @@ import {
   PhoneOutgoing,
   PhoneMissed,
   Voicemail,
+  Ellipsis
 } from "lucide-react";
 import { format } from "date-fns";
 import { fetchActivity, updateArchiveStatus } from "@/lib/activitiesAPIrequest";
@@ -17,17 +18,20 @@ import { useToast } from "@/hooks/use-toast";
 export default function Datail({ params }) {
   const { toast } = useToast();
   const callID = params.id;
+  const [isLoading, setIsLoading] = useState(true);
   const [call, setCall] = useState(null);
 
   useEffect(() => {
     const getActivity = async () => {
       if (callID) {
+        setIsLoading(true);
         const result = await fetchActivity(callID);
         if (result.error) {
           console.log(result.error);
         } else {
           setCall(result);
         }
+        setIsLoading(false);
       }
     };
     getActivity();
@@ -54,12 +58,17 @@ export default function Datail({ params }) {
   };
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col h-[98%]">
       <nav className="flex items-center px-4 h-14">
         <Link href="/activity" variant="ghost" size="icon" className="mr-2">
           <ArrowLeft className="h-6 w-6" />
         </Link>
       </nav>
+      {isLoading && (
+            <div className="flex items-center justify-center h-1/2">
+              <Ellipsis className="h-20 w-20 animate-spin text-gray-500" />
+            </div>
+          )}
       {call && (
         <main className="flex-1 px-10">
           <div className="max-w-md mx-auto space-y-6">
