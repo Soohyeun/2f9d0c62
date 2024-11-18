@@ -1,6 +1,6 @@
 import React from "react";
 
-export const Header = () => {
+const Header = () => {
   return (
     <header className="w-full h-20 pb-5 pt-5 flex items-center justify-center shadow-[0_1px_0_rgba(0,0,0,0.1)]">
       <svg
