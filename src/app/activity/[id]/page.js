@@ -111,7 +111,7 @@ export default function Datail({ params }) {
 
             <Button
               onClick={handleArchive}
-              className="bg-green-500 hover:bg-green-600 w-full"
+              className={call.is_archived ? "bg-red-500 hover:bg-red-400 w-full" : "bg-green-400 hover:bg-green-500 w-full"}
             >
               <Archive className="mr-2 h-4 w-4" />
               {call.is_archived ? "Unarchive" : "Archive"}

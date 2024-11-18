@@ -26,7 +26,7 @@ const UnArchiveAllBtn = ({ setActivities }) => {
     <button
       onClick={handleUnarchiveAll}
       size="icon"
-      className="absolute right-6 h-10 w-10 rounded-full bg-red-400 hover:bg-red-500 flex items-center justify-center"
+      className="absolute right-6 h-10 w-10 rounded-full bg-red-500 hover:bg-red-400 flex items-center justify-center"
     >
       <ArchiveX className="h-6 w-6 text-white" />
     </button>
