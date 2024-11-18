@@ -36,7 +36,7 @@ export default function Datail({ params }) {
   const handleArchive = async () => {
     const isArchived = call.is_archived;
     try {
-      console.log(await updateArchiveStatus(callID, isArchived));
+      await updateArchiveStatus(callID, isArchived);
       toast({
         title: "Success",
         description: `Successfully ${isArchived ? "unarchived" : "archived"}!`,
