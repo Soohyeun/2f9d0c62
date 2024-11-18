@@ -6,6 +6,8 @@ import ActivityCard from "@/components/ActivityCard";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import { fetchAllActivity } from "@/lib/activitiesAPIrequest";
+import UnArchiveAllBtn from "@/components/ui/UnarchiveAllBtn";
+import ArchiveAllBtn from "@/components/ui/ArchiveAllBtn";
 
 const Activities = () => {
   const [displayArchived, setDisplayArchived] = useState(false);
@@ -35,10 +37,16 @@ const Activities = () => {
     };
     getAllActivities();
   }, []);
+
   let previousDate = null;
   return (
     <div>
       <div className="p-5 h-[500px]">
+        {displayArchived ? (
+          <UnArchiveAllBtn setActivities={setActivities} />
+        ) : (
+          <ArchiveAllBtn setActivities={setActivities} />
+        )}
         <div className="flex items-center justify-center mb-3">
           <ToggleButtonGroup
             className="stick"
@@ -58,24 +66,24 @@ const Activities = () => {
         <div className="flex-1 h-[98%] overflow-y-auto">
           {activities ? (
             activities
-            .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
-            .filter((activity) => activity.is_archived === displayArchived)
-            .map((activity) => {
-              const currentDate = formatDate(activity.created_at); 
-              const isNewDate = currentDate !== previousDate;
-              previousDate = currentDate;
-          
-              return (
-                <div key={activity.id}>
-                  {isNewDate && (
-                    <div className="px-4 py-2 text-xs text-muted-foreground">
-                      {currentDate}
-                    </div>
-                  )}
-                  <ActivityCard activity={activity} />
-                </div>
-              );
-            })
+              .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+              .filter((activity) => activity.is_archived === displayArchived)
+              .map((activity) => {
+                const currentDate = formatDate(activity.created_at);
+                const isNewDate = currentDate !== previousDate;
+                previousDate = currentDate;
+
+                return (
+                  <div key={activity.id}>
+                    {isNewDate && (
+                      <div className="px-4 py-2 text-xs text-muted-foreground">
+                        {currentDate}
+                      </div>
+                    )}
+                    <ActivityCard activity={activity} />
+                  </div>
+                );
+              })
           ) : (
             <div className="flex justify-center mt-12 text-lg">
               Data is not founded.

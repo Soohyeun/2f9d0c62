@@ -80,3 +80,28 @@ export const updateArchiveStatus = async (callId, isArchived) => {
     return { error: "Failed to update an archived status.", details: error.message };
   }
 };
+
+/**
+ * Reset activities.
+ * @returns result message as a string
+ */
+export const resetActivities = async () => {
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/reset`,
+      {
+        method: "PATCH"
+      }
+    );
+
+    if (!response.ok) {
+      return {
+        error: `Failed to reset all activities (status: ${response.status})`,
+      };
+    }
+
+    return "Reset all activities sucessfully";
+  } catch (error) {
+    return { error: "Failed to reset all activities.", details: error.message };
+  }
+};
