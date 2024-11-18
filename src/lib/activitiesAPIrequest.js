@@ -4,9 +4,11 @@
  */
 export const fetchAllActivity = async () => {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/activities`);
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/activities`
+    );
     if (response.status === 404) {
-      return { error: 'Acticity not found (404)', status: 404 };
+      return { error: "Acticity not found (404)", status: 404 };
     }
 
     if (!response.ok) {
@@ -17,22 +19,23 @@ export const fetchAllActivity = async () => {
     const res = await response.json();
     return res;
   } catch (error) {
-    return { error: 'Failed to fetch an activity', details: error.message };
+    return { error: "Failed to fetch an activity", details: error.message };
   }
 };
-
 
 /**
  * Fetch a specific activity by an id.
  * @param {number} callId - id of a activity
  * @returns activity as an object
  */
-export const fetchActivity = async callId => {
+export const fetchActivity = async (callId) => {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/activities/${callId}`);
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/activities/${callId}`
+    );
     // a given id activity doesn't exist, return 404 status.
     if (response.status === 404) {
-      return { error: 'Acticity not found (404)', status: 404 };
+      return { error: "Acticity not found (404)", status: 404 };
     }
 
     if (!response.ok) {
@@ -43,6 +46,37 @@ export const fetchActivity = async callId => {
     const res = await response.json();
     return res;
   } catch (error) {
-    return { error: 'Failed to fetch an activity', details: error.message };
+    return { error: "Failed to fetch an activity", details: error.message };
+  }
+};
+
+/**
+ * Update a specific activity's archive status.
+ * @param {number} callId - id of a activity
+ * @param {boolean} isArchived - current archived status of a call
+ * @returns result message as a string
+ */
+export const updateArchiveStatus = async (callId, isArchived) => {
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/activities/${callId}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ "is_archived": !isArchived }),
+      }
+    );
+
+    if (!response.ok) {
+      return {
+        error: `Failed to update an archived status (status: ${response.status})`,
+      };
+    }
+
+    return "Archive status updated sucessfully";
+  } catch (error) {
+    return { error: "Failed to update an archived status.", details: error.message };
   }
 };

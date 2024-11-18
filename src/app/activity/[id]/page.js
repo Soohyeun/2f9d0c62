@@ -10,10 +10,12 @@ import {
   Voicemail,
 } from "lucide-react";
 import { format } from "date-fns";
-import { fetchActivity } from "@/lib/activitiesAPIrequest";
+import { fetchActivity, updateArchiveStatus } from "@/lib/activitiesAPIrequest";
 import Link from "next/link";
+import { useToast } from "@/hooks/use-toast";
 
 export default function Datail({ params }) {
+  const { toast } = useToast();
   const callID = params.id;
   const [call, setCall] = useState(null);
 
@@ -31,8 +33,24 @@ export default function Datail({ params }) {
     getActivity();
   }, [callID]);
 
-  const handleArchive = () => {
-    setCall((prevCall) => ({ ...prevCall, is_archived: true }));
+  const handleArchive = async () => {
+    const isArchived = call.is_archived;
+    try {
+      console.log(await updateArchiveStatus(callID, isArchived));
+      toast({
+        title: "Success",
+        description: `Successfully ${isArchived ? "unarchived" : "archived"}!`,
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: `Failed to ${
+          isArchived ? "unarchive" : "archive"
+        }. Please try again.`,
+      });
+    } finally {
+      setCall((prevCall) => ({ ...prevCall, is_archived: !isArchived }));
+    }
   };
 
   return (
@@ -91,7 +109,10 @@ export default function Datail({ params }) {
               </div>
             </div>
 
-            <Button onClick={handleArchive} className="bg-green-500 hover:bg-green-600 w-full">
+            <Button
+              onClick={handleArchive}
+              className="bg-green-500 hover:bg-green-600 w-full"
+            >
               <Archive className="mr-2 h-4 w-4" />
               {call.is_archived ? "Unarchive" : "Archive"}
             </Button>
