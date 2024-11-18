@@ -35,7 +35,7 @@ const Activities = () => {
     };
     getAllActivities();
   }, []);
-
+  let previousDate = null;
   return (
     <div>
       <div className="p-5 h-[500px]">
@@ -58,19 +58,24 @@ const Activities = () => {
         <div className="flex-1 h-[98%] overflow-y-auto">
           {activities ? (
             activities
-              .filter((activity) => activity.is_archived === displayArchived)
-              .map((activity, index) => (
+            .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+            .filter((activity) => activity.is_archived === displayArchived)
+            .map((activity) => {
+              const currentDate = formatDate(activity.created_at); 
+              const isNewDate = currentDate !== previousDate;
+              previousDate = currentDate;
+          
+              return (
                 <div key={activity.id}>
-                  {(index === 0 ||
-                    formatDate(activities[index - 1].created_at) !==
-                      formatDate(activity.created_at)) && (
+                  {isNewDate && (
                     <div className="px-4 py-2 text-xs text-muted-foreground">
-                      {formatDate(activity.created_at)}
+                      {currentDate}
                     </div>
                   )}
                   <ActivityCard activity={activity} />
                 </div>
-              ))
+              );
+            })
           ) : (
             <div className="flex justify-center mt-12 text-lg">
               Data is not founded.
