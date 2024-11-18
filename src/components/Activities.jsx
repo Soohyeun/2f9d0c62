@@ -1,7 +1,18 @@
+"use client";
+
 import React from "react";
+import { useState } from "react";
 import ActivityCard from "./ActivityCard";
+import ToggleButton from "@mui/material/ToggleButton";
+import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 
 const Activities = () => {
+  const [isArchived, SetIsArchived] = useState(false);
+
+  const handleIsArchived = (event, clicked) => {
+    SetIsArchived(clicked);
+  };
+
   const activities_data = [
     {
       direction: "inbound",
@@ -215,19 +226,39 @@ const Activities = () => {
   };
 
   return (
-    <div className="flex-1 overflow-y-auto h-full">
-      {activities_data.map((activity, index) => (
-        <div key={activity.id}>
-          {(index === 0 ||
-            formatDate(activities_data[index - 1].created_at) !==
-              formatDate(activity.created_at)) && (
-            <div className="px-4 py-2 text-xs text-muted-foreground">
-              {formatDate(activity.created_at)}
+    <div className="h-full">
+      <div className="flex items-center justify-center mb-3">
+        <ToggleButtonGroup
+          className="stick"
+          value={isArchived}
+          exclusive
+          onChange={handleIsArchived}
+        >
+          <ToggleButton className="h-6 w-24 text-xs px-2 py-1" value={false}>
+            Feed
+          </ToggleButton>
+          <ToggleButton className="h-6 w-24 text-xs px-2 py-1" value={true}>
+            Archive
+          </ToggleButton>
+        </ToggleButtonGroup>
+      </div>
+
+      <div className="flex-1 h-[98%] overflow-y-auto">
+        {activities_data
+          .filter((activity) => activity.is_archived === isArchived)
+          .map((activity, index) => (
+            <div key={activity.id}>
+              {(index === 0 ||
+                formatDate(activities_data[index - 1].created_at) !==
+                  formatDate(activity.created_at)) && (
+                <div className="px-4 py-2 text-xs text-muted-foreground">
+                  {formatDate(activity.created_at)}
+                </div>
+              )}
+              <ActivityCard activity={activity} />
             </div>
-          )}
-          <ActivityCard activity={activity} />
-        </div>
-      ))}
+          ))}
+      </div>
     </div>
   );
 };
