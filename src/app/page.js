@@ -1,9 +1,5 @@
-import Activities from "@/components/Activities";
+import { redirect } from "next/navigation";
 
 export default function Home() {
-  return (
-    <div className="p-5 h-[500px]">
-      <Activities/>
-    </div>
-  );
+  redirect("/activity")
 }

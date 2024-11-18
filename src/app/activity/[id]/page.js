@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { format } from "date-fns";
 import { fetchActivity } from "@/lib/activitiesAPIrequest";
+import Link from "next/link";
 
 export default function Datail({ params }) {
   const callID = params.id;
@@ -37,9 +38,9 @@ export default function Datail({ params }) {
   return (
     <div className="flex flex-col">
       <nav className="flex items-center px-4 h-14">
-        <Button variant="ghost" size="icon" className="mr-2">
+        <Link href="/activity" variant="ghost" size="icon" className="mr-2">
           <ArrowLeft className="h-6 w-6" />
-        </Button>
+        </Link>
       </nav>
       {call && (
         <main className="flex-1 px-10">
@@ -90,7 +91,7 @@ export default function Datail({ params }) {
               </div>
             </div>
 
-            <Button onClick={handleArchive} className="bg-green-500 w-full">
+            <Button onClick={handleArchive} className="bg-green-500 hover:bg-green-600 w-full">
               <Archive className="mr-2 h-4 w-4" />
               {call.is_archived ? "Unarchive" : "Archive"}
             </Button>

@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 import { PhoneIncoming, PhoneOutgoing, PhoneMissed, Voicemail } from "lucide-react";
 
 const ActivityCard = ({ activity }) => {
@@ -11,7 +12,7 @@ const ActivityCard = ({ activity }) => {
   };
 
   return (
-    <div className="flex items-start gap-4 p-4 m-2 border rounded-lg">
+    <Link href={`/activity/${activity.id}`} className="flex items-start gap-4 p-4 m-2 border rounded-lg hover:bg-gray-100">
       <div className="mt-1">
         {activity.direction === "inbound" ? (
           activity.call_type === "answered" ? (
@@ -39,7 +40,7 @@ const ActivityCard = ({ activity }) => {
       <div className="text-sm text-muted-foreground whitespace-nowrap">
         {formatTime(activity.created_at)}
       </div>
-    </div>
+    </Link>
   );
 };
 
