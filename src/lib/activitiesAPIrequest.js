@@ -2,7 +2,7 @@
  * Fetch all activities.
  * @returns all activities as a list
  */
-export const fetchAllActivity = async () => {
+export const fetchAllActivities = async () => {
   try {
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_BACKEND_URL}/activities`
@@ -65,7 +65,7 @@ export const updateArchiveStatus = async (callId, isArchived) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ "is_archived": !isArchived }),
+        body: JSON.stringify({ is_archived: !isArchived }),
       }
     );
 
@@ -75,9 +75,15 @@ export const updateArchiveStatus = async (callId, isArchived) => {
       };
     }
 
-    return { success: true, message: "Update an activity archived status successfully." };
+    return {
+      success: true,
+      message: "Update an activity archived status successfully.",
+    };
   } catch (error) {
-    return { error: "Failed to update an archived status.", details: error.message };
+    return {
+      error: "Failed to update an archived status.",
+      details: error.message,
+    };
   }
 };
 
@@ -90,7 +96,7 @@ export const resetActivities = async () => {
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_BACKEND_URL}/reset`,
       {
-        method: "PATCH"
+        method: "PATCH",
       }
     );
 
@@ -100,7 +106,10 @@ export const resetActivities = async () => {
       };
     }
 
-    return { success: true, message: "All activities unarchived successfully." };
+    return {
+      success: true,
+      message: "All activities unarchived successfully.",
+    };
   } catch (error) {
     return { error: "Failed to reset all activities.", details: error.message };
   }
@@ -112,22 +121,28 @@ export const resetActivities = async () => {
  */
 export const archiveAllActivities = async () => {
   try {
-
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/activities`);
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/activities`
+    );
     if (!response.ok) {
       throw new Error(`Failed to fetch activities: ${response.status}`);
     }
     const activities = await response.json();
 
-    const archivePromises = activities.map((activity) =>
-      fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/activities/${activity.id}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ is_archived: true }),
-      })
-    );
+    const archivePromises = activities
+      .filter((activity) => !activity.is_archived)
+      .map((activity) =>
+        fetch(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/activities/${activity.id}`,
+          {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ is_archived: true }),
+          }
+        )
+      );
 
     const results = await Promise.all(archivePromises);
 

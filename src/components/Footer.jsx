@@ -6,7 +6,7 @@ const Footer = () => {
     <footer className="absolute bottom-0 left-0 w-full rounded-[3px] bg-background border-t p-2">
       <div className="flex items-center justify-between px-4">
         <button variant="ghost" size="icon" className="h-10 w-10 flex items-center justify-center">
-          <Bell className="h-5 w-5" />
+          <Bell className="h-5 w-5" color="green"/>
         </button>
 
         <button variant="ghost" size="icon" className="h-10 w-10 flex items-center justify-center">

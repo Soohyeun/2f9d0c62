@@ -1,16 +1,10 @@
 import React from "react";
 import Link from "next/link";
 import { PhoneIncoming, PhoneOutgoing, PhoneMissed, Voicemail } from "lucide-react";
+import { formatTime } from "@/lib/formatFunctions";
+
 
 const ActivityCard = ({ activity }) => {
-  const formatTime = (dateString) => {
-    const date = new Date(dateString);
-    return date.toLocaleTimeString("en-US", {
-      hour: "2-digit",
-      minute: "2-digit",
-    });
-  };
-
   return (
     <Link href={`/activity/${activity.id}`} className="flex items-start gap-4 p-4 m-2 border rounded-lg hover:bg-gray-100">
       <div className="mt-1">
