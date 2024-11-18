@@ -235,7 +235,7 @@ const Activities = () => {
           onChange={handleIsArchived}
         >
           <ToggleButton className="h-6 w-24 text-xs px-2 py-1" value={false}>
-            Feed
+            Activity
           </ToggleButton>
           <ToggleButton className="h-6 w-24 text-xs px-2 py-1" value={true}>
             Archive
