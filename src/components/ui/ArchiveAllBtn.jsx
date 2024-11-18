@@ -1,4 +1,4 @@
-import { fetchAllActivity } from "@/lib/activitiesAPIrequest";
+import { archiveAllActivities, fetchAllActivity } from "@/lib/activitiesAPIrequest";
 import { Archive } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
@@ -6,7 +6,7 @@ const ArchiveAllBtn = ({ setActivities }) => {
   const { toast } = useToast();
   const handleUnarchiveAll = async () => {
     try {
-      // await resetActivities();
+      await archiveAllActivities();
       toast({
         title: "Success",
         description: `Successfully archived all!`,

@@ -54,7 +54,7 @@ export const fetchActivity = async (callId) => {
  * Update a specific activity's archive status.
  * @param {number} callId - id of a activity
  * @param {boolean} isArchived - current archived status of a call
- * @returns result message as a string
+ * @returns {Promise<Object>} - Returns a success message or an error message.
  */
 export const updateArchiveStatus = async (callId, isArchived) => {
   try {
@@ -75,7 +75,7 @@ export const updateArchiveStatus = async (callId, isArchived) => {
       };
     }
 
-    return "Archive status updated sucessfully";
+    return { success: true, message: "Update an activity archived status successfully." };
   } catch (error) {
     return { error: "Failed to update an archived status.", details: error.message };
   }
@@ -83,7 +83,7 @@ export const updateArchiveStatus = async (callId, isArchived) => {
 
 /**
  * Reset activities.
- * @returns result message as a string
+ * @returns {Promise<Object>} - Returns a success message or an error message.
  */
 export const resetActivities = async () => {
   try {
@@ -100,8 +100,44 @@ export const resetActivities = async () => {
       };
     }
 
-    return "Reset all activities sucessfully";
+    return { success: true, message: "All activities unarchived successfully." };
   } catch (error) {
     return { error: "Failed to reset all activities.", details: error.message };
+  }
+};
+
+/**
+ * Archives all activities by setting is_archived to true for each activity.
+ * @returns {Promise<Object>} - Returns a success message or an error message.
+ */
+export const archiveAllActivities = async () => {
+  try {
+
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/activities`);
+    if (!response.ok) {
+      throw new Error(`Failed to fetch activities: ${response.status}`);
+    }
+    const activities = await response.json();
+
+    const archivePromises = activities.map((activity) =>
+      fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/activities/${activity.id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ is_archived: true }),
+      })
+    );
+
+    const results = await Promise.all(archivePromises);
+
+    const failedUpdates = results.filter((res) => !res.ok);
+    if (failedUpdates.length > 0) {
+      throw new Error(`Failed to archive ${failedUpdates.length} activities.`);
+    }
+
+    return { success: true, message: "All activities archived successfully." };
+  } catch (error) {
+    return { success: false, error: error.message };
   }
 };
