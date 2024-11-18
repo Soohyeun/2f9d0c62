@@ -7,7 +7,7 @@ import { fetchAllActivities } from "@/lib/activitiesAPIrequest";
 import { formatDate } from "@/lib/formatFunctions";
 import ActivityCard from "@/components/ActivityCard";
 import ArchiveAllBtn from "@/components/ui/ArchiveAllBtn";
-import ToggleBtn from "@/components/ui/toggleBtn";
+import ToggleBtn from "@/components/ui/ToggleBtn";
 
 const Activities = () => {
   const [isLoading, setIsLoading] = useState(true);
